@@ -3,19 +3,20 @@
     color:#fff
 }
 
-.container{
+.bar{
     justify-content: flex-start;
 }
-ul{
+.bar .list{
     display: flex;
     flex-direction: row;
     list-style: none;
 }
-ul li{
+.bar .list li{
     width: 60px;
     height: 60px;
+    margin: 1px;
 }
-ul li a{
+.bar .list li a{
     text-decoration: none;
     display: flex;
     flex-direction: column;
@@ -25,35 +26,44 @@ ul li a{
     border-radius: 5px;
 }
 
-ul li a .text{
+.bar .list li a .text{
     font-size: 15px;
     font-family: Arial;
     font-variant: small-caps;
 }
-ul li a .icon{
+.bar .list li a .icon{
     background: transparent;
     color: #222;
     font-size: 2em;
 }
 
-ul li a:hover{
+.bar .list li a:hover{
     background: rgb(72, 72, 72);
 }
-ul li a:hover .text{
+.bar .list li a:hover .text{
     background: rgb(72, 72, 72);
 }
-ul li a:hover .icon svg{
+.bar .list li a:hover .icon svg{
     background: rgb(72, 72, 72);
+}
+.bar .list li.selected a{
+    background: rgb(90, 90, 90);
+}
+.bar .list li.selected a .text{
+    background: rgb(90, 90, 90);
+}
+.bar .list li.selected a .icon svg{
+    background: rgb(90, 90, 90);
 }
 
 /* @media (max-width: 900px) {
-    ul li{
+    .list li{
         min-width: 100px;
     }
 
 }
 @media (max-width: 300px) {
-    ul li{
+    .list li{
         min-width: 50px;
     }
 

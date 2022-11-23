@@ -2,12 +2,19 @@ const listButtoms = document.querySelectorAll(".bar .list li");
 // const searchBarInput = document.getElementById("input[type='text']");
 const searchBarInput = document.querySelector("#searchBar");
 const searchBarContainer = document.querySelector("#searchBarContainer");
+const searchBarSimulator = document.querySelector("#searchBarSimulator");
 const searchBarIcon = document.querySelector("#searchBarContainer .icon");
 const searchBarIconSvg = document.querySelector("#searchBarContainer .icon svg");
 const resultsGrid = document.querySelector("#resultsGrid");
 
 
-
+listButtoms.forEach(item => {
+    item.onclick = function () {
+        var selected_buttom = document.querySelector(".bar .list li.selected");
+        if (selected_buttom != null) selected_buttom.classList.remove('selected');
+        item.classList.add('selected');
+    }
+});
 
 searchBarInput.addEventListener('focus', (event) => {
     // event.target.style.background = 'pink';
@@ -16,22 +23,30 @@ searchBarInput.addEventListener('focus', (event) => {
     // searchBarIcon.style.padding = '0'
 
     searchBarIcon.classList.add("searching");
-
+    event.target.style.padding = "10px";
+    event.target.style.paddingLeft = "40px";
+    searchBarSimulator.style.height = '70px';
 });
-
 searchBarInput.addEventListener('blur', (event) => {
     // event.target.style.background = 'white';
     searchBarIcon.classList.remove('searching')
+    event.target.style.padding = "5px";
+    event.target.style.paddingLeft = "40px";
+    searchBarSimulator.style.height = '60px';
+});
+searchBarInput.addEventListener('input', (event) =>{
+    // event.target.value = 'K'.fontcolor("white");
+    
 })
 
+document.addEventListener('scroll', (event) =>{
+    searchBarContainer.style.top =  (parseFloat(searchBarContainer.style.top) - 1) + 'px';
+    console.log(searchBarContainer.style.top);
+});
 
-listButtoms.forEach(item => {
-    item.onclick = function () {
-        var selected_buttom = document.querySelector(".bar .list li.selected");
-        if (selected_buttom != null) selected_buttom.classList.remove('selected')
-        item.classList.add('selected')
-    }
-})
+
+
+
 
 function Loading(pos_x, pos_y, ratio) {
     const circle = document.createElement('div');
@@ -67,15 +82,6 @@ class Result {
 }
 
 
-// function SeeResults(lista_resultados) {
-//     for (let result of lista_resultados) {
-//         if (result.length > 200) {
-//             result = result.substring(0, 200) + "   ........ ";
-//         }
-//         resultObject = new Result(result)
-//     }
-//     console.log({ Juguemos: "lalalala" }[Juguemos]);
-// }
 function SeeResults(docs_list, details_list) {
     for (let i = 0; i < Math.min(docs_list.length, details_list.length); i++) {
         doc_title = docs_list[i];
@@ -106,6 +112,8 @@ SeeResults(["Lorem Ipsum", "Seminario de JavaScript (LP)", "Agua y jabon", "Rusi
 "Trata sobre la guerra que viven actualmente los Rusos y Ucranianos",
 "JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.",
 "Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores."]);
+
+
 
 
 

@@ -1,11 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const textreader = require('./textreader');
+const vectorial = require('./vectorial');
 
 var config = {};
 var principalpage = fs.readFileSync("../Frontend/index.html");
 // principalpage = new DOMParser(principalpage);
-var icon = fs.readFileSync("../Frontend/img/settings2.png");
 
 
 //#region ///////////////////////////////// Local Reading /////////////////////////////////
@@ -40,5 +41,7 @@ function StartServer(){
 
 
 ///////////////////////////////// Start /////////////////////////////////
+var docs = textreader.read();
 RefreshSettings();
 StartServer();
+

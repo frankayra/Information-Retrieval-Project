@@ -2,6 +2,8 @@ const fs = require('fs');
 const {readFile, readdir} = require('fs/promises');
 
 
+//#region Reding Functions
+
 function readSync(){
     var texts = [];
     for(txt of fs.readdirSync('../Docs/')){
@@ -22,12 +24,12 @@ async function read() {
     }
     return texts;
 }
+//#endregion
 
-
+//#region Exports
 module.exports = {
     read,
     readSync
 };
+//#endregion
 
-
-console.log((new Object())["a"]);

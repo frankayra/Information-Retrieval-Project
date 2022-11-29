@@ -2,7 +2,7 @@ const fs = require('fs');
 const {readFile, readdir} = require('fs/promises');
 
 
-//#region Reding Functions
+//#region ///////////////////////////////// Reding Functions /////////////////////////////////
 
 function readSync(){
     var texts = [];
@@ -26,7 +26,7 @@ async function read() {
 }
 //#endregion
 
-//#region Exports
+//#region ///////////////////////////////// Exports /////////////////////////////////
 module.exports = {
     read,
     readSync

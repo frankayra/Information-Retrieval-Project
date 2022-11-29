@@ -8,7 +8,7 @@ let terms_indexes_length = 0;
 let max_frecuencies = [];
 let terms_occurence_in_docs = [];
 
-//#region TF & IDF & sim(d, q)
+//#region ///////////////////////////////// TF & IDF & sim(d, q) /////////////////////////////////
 const tf = (j_doc, i_term)=>{
     let ij_term_frec = terms_frequency_table[j_doc][i_term];
     if(max_frecuencies[j_doc] === undefined){
@@ -104,7 +104,7 @@ const sim = (doc_index, q_array, q_alpha) => {
 //#endregion
 
 
-// #region fill_terms_frequency_table(docs: String[])
+// #region ///////////////////////////////// fill_terms_frequency_table(docs: String[]) /////////////////////////////////
 const fill_terms_frequency_table  = (docs)  =>{
     for (let j = 0; j < docs.length; j++) {
         const current_doc = docs[j];
@@ -163,7 +163,7 @@ const fill_weights_matrix_having_terms_frecuency_table = () =>{
 
 
 
-//#region Exports
+//#region ///////////////////////////////// Exports /////////////////////////////////
 module.exports = {
     sim,
     termsFrequency: terms_frequency_table,
@@ -174,7 +174,7 @@ module.exports = {
 
 
 
-//#region Tests
+//#region ///////////////////////////////// Tests /////////////////////////////////
 
 
 // const doc1 = "lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam mollitia voluptates atque consectetur, reprehenderit libero beatae? Tenetur, praesentium distinctio consectetur repellat voluptatem rerum error ab inventore ad facilis quidem necessitatibus.";

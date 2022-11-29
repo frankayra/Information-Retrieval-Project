@@ -1,6 +1,7 @@
 const fs = require('fs');
 const {readFile, readdir} = require('fs/promises');
 
+
 function readSync(){
     var texts = [];
     for(txt of fs.readdirSync('../Docs/')){
@@ -28,3 +29,5 @@ module.exports = {
     readSync
 };
 
+
+console.log((new Object())["a"]);

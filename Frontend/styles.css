@@ -81,6 +81,7 @@ body{
     
     width: 100%;
     z-index: 3;
+    box-shadow: 1px 1px 10px 2px rgb(12, 12, 12);
 }
 #searchBar{
     transition: 0.3s;
@@ -200,11 +201,13 @@ body{
     height: fit-content;
     top: 190px;
     left: 70%;
-    opacity: 0.4;
+    opacity: 0.2;
 
 }
 #carucell img{
     background-color: transparent;
+    filter: blur(5px);
+
 }
 
 /* @media (max-width: 900px) {

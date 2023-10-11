@@ -7,6 +7,8 @@ const searchBarIcon = document.querySelector("#searchBarContainer .icon");
 const searchBarIconSvg = document.querySelector("#searchBarContainer .icon svg");
 const resultsGrid = document.querySelector("#resultsGrid");
 
+let result_docs = [];
+const console_log = console.log.bind(console);
 
 listButtoms.forEach(item => {
     item.onclick = function () {
@@ -17,10 +19,6 @@ listButtoms.forEach(item => {
 });
 
 searchBarInput.addEventListener('focus', (event) => {
-    // event.target.style.background = 'pink';
-    // searchBarIcon.style.left = '63px'
-    // searchBarIcon.style.top = '20px'
-    // searchBarIcon.style.padding = '0'
 
     searchBarIcon.classList.add("searching");
     event.target.style.padding = "10px";
@@ -38,6 +36,15 @@ searchBarInput.addEventListener('input', (event) =>{
     // event.target.value = 'K'.fontcolor("white");
     
 })
+searchBarInput.addEventListener("keydown", (e) => {
+    if(e.key == "Enter"){
+        const query = searchBarInput.value;
+        const page = 0;
+        FetchDataFromServer(0, query == "" ? "texts" : query);
+        console.log(`query: ${query}`);
+    }
+});
+
 
 document.addEventListener('scroll', (event) =>{
     searchBarContainer.style.top =  (parseFloat(searchBarContainer.style.top) - 1) + 'px';
@@ -77,6 +84,7 @@ class Result {
         
         
         resultsGrid.appendChild(visual);
+        result_docs.push(this);
 
     }
 }
@@ -95,25 +103,72 @@ function SeeResults(docs_list, details_list) {
         }
         resultObject = new Result(doc_title, doc_details);
     }
-    // console.log({ Juguemos: "lalalala" }[Juguemos]);
+}
+function SeeJSONresults(JSONdocs){
+    for(const child of resultsGrid.querySelectorAll(".result")){
+        resultsGrid.removeChild(child);
+    }
+    const docs = JSONdocs;
+    for(let doc_title in docs){
+        let doc_details = docs[doc_title];
+        const reg_exp = /.txt/gi;
+        doc_title = doc_title.substring(0, ((reg_exp.exec(doc_title))["index"]));
+        if (doc_title.length > 30) {
+            doc_title = doc_title.substring(0, 30) + "   ... ";
+        }
+        if (doc_details.length > 200) {
+            doc_details = doc_details.substring(0, 200) + "   ........ ";
+        }
+        resultObject = new Result(doc_title, doc_details);
+    }
 }
 
 
-SeeResults(["Lorem Ipsum", "Seminario de JavaScript (LP)", "Agua y jabon", "Rusia gana la guerra a la fuerza", "Objetos de JavaScript", "Literal Objects. Un enfoque desde JS", "Lorem Ipsum", "Seminario de JavaScript (LP)", "Agua y jabon", "Rusia gana la guerra a la fuerza", "Objetos de JavaScript", "Literal Objects. Un enfoque desde JS"], 
-["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam mollitia voluptates atque consequuntur, reprehenderit libero beatae? Tenetur, praesentium distinctio consectetur repellat voluptatem rerum error ab inventore ad facilis quidem necessitatibus.", 
-"Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
-"Sin descripcion... Es la cancion que siempre oiamos que nos cantaban nuestros padres",
-"Trata sobre la guerra que viven actualmente los Rusos y Ucranianos",
-"JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.",
-"Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
-"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam mollitia voluptates atque consequuntur, reprehenderit libero beatae? Tenetur, praesentium distinctio consectetur repellat voluptatem rerum error ab inventore ad facilis quidem necessitatibus.", 
-"Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
-"Sin descripcion... Es la cancion que siempre oiamos que nos cantaban nuestros padres",
-"Trata sobre la guerra que viven actualmente los Rusos y Ucranianos",
-"JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.",
-"Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores."]);
+async function FetchDataFromServer(page=0, query="texts"){
+    if(query === "texts"){
+        console_log(`page?=${page}texts`);
+        const response = await fetch(`page?=${page}texts`);
+        
+        if (!response.ok) {
+            console.log("no he terminado de recibir response y ya se esta llamando el callback");
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        SeeJSONresults(await response.json());
+    }
+    else{
+        console_log(`page?=${page}texts`);
+        const response = await fetch(`page?=${page}query?=${query}`);
+
+        if (!response.ok) {
+            console.log("no he terminado de recibir response y ya se esta llamando el callback");
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+        SeeJSONresults(await response.json());
+    }
+}
 
 
 
 
 
+
+
+
+
+// SeeResults(["Lorem Ipsum", "Seminario de JavaScript (LP)", "Agua y jabon", "Rusia gana la guerra a la fuerza", "Objetos de JavaScript", "Literal Objects. Un enfoque desde JS", "Lorem Ipsum", "Seminario de JavaScript (LP)", "Agua y jabon", "Rusia gana la guerra a la fuerza", "Objetos de JavaScript", "Literal Objects. Un enfoque desde JS"], 
+// ["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam mollitia voluptates atque consequuntur, reprehenderit libero beatae? Tenetur, praesentium distinctio consectetur repellat voluptatem rerum error ab inventore ad facilis quidem necessitatibus.", 
+// "Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
+// "Sin descripcion... Es la cancion que siempre oiamos que nos cantaban nuestros padres",
+// "Trata sobre la guerra que viven actualmente los Rusos y Ucranianos",
+// "JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.",
+// "Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
+// "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam mollitia voluptates atque consequuntur, reprehenderit libero beatae? Tenetur, praesentium distinctio consectetur repellat voluptatem rerum error ab inventore ad facilis quidem necessitatibus.", 
+// "Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.",
+// "Sin descripcion... Es la cancion que siempre oiamos que nos cantaban nuestros padres",
+// "Trata sobre la guerra que viven actualmente los Rusos y Ucranianos",
+// "JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.",
+// "Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores."]);
+
+// fetch("../Docs/docs.json")
+//     .then((response) => SeeJSONresults(response.json()))
+//     .catch(err=> console.log(err));

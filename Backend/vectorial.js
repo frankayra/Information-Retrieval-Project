@@ -1,6 +1,3 @@
-
-
-
 let terms_frequency_table = [];
 let terms_weight_table = [];                                   
 let terms_indexes = {};
@@ -72,15 +69,15 @@ const sim = (doc_index, q_array, q_alpha) => {
     let q_norm = 0;
     let doc_norm = 0;
     for (const term in terms_indexes) {
-        console.log(`término: \"${term}\"`);
+        // console.log(`término: \"${term}\"`);
         
 
         const term_weight_on_doc = doc_weights_vect[terms_indexes[term]] === undefined ? 0 : doc_weights_vect[terms_indexes[term]];
         const term_weight_on_q = (term in terms_occurence_in_q ? ((q_alpha + (1 - q_alpha)*(terms_occurence_in_q[term]/q_max_frec))) : q_alpha) * idf(terms_indexes[term]);        // idf = Math.log10(terms_frequency_table.length / terms_occurence_in_docs[terms_indexes[term]]
         // const term_weight_on_q = term in terms_occurence_in_q ? (q_alpha + (1 - q_alpha)*(terms_occurence_in_q[term]/q_max_frec)) * idf(terms_indexes[term]) : 0;
-
-        console.log(`peso en el documento: ${term_weight_on_doc}`);
-        console.log(`peso en la consulta: ${term_weight_on_q}`);
+        
+        // console.log(`peso en el documento: ${term_weight_on_doc}`);
+        // console.log(`peso en la consulta: ${term_weight_on_q}`);
 
         scalar_product += term_weight_on_doc * term_weight_on_q;
         
@@ -104,6 +101,7 @@ const sim = (doc_index, q_array, q_alpha) => {
 //#endregion
 
 
+
 // #region ///////////////////////////////// fill_terms_frequency_table(docs: String[]) /////////////////////////////////
 const fill_terms_frequency_table  = (docs)  =>{
     for (let j = 0; j < docs.length; j++) {
@@ -111,7 +109,7 @@ const fill_terms_frequency_table  = (docs)  =>{
         if(terms_frequency_table.length <= j){
             terms_frequency_table[j] = [];
         }
-        for (const term of current_doc.split(" ")) {
+        for (const term of current_doc) {
             if(term in terms_indexes){
                 // console.log(`ya habia encontrado este termino: ${term}, indice: ${terms_indexes[term]}`);
                 if(terms_frequency_table[j][terms_indexes[term]] === undefined){
@@ -163,12 +161,45 @@ const fill_weights_matrix_having_terms_frecuency_table = () =>{
 
 
 
+//#region ///////////////////////////////// Sorting /////////////////////////////////
+
+function SortDocumentsRankingBy(q_array, q_alpha){
+    console.log(`q_array: ${q_array}`);
+    docs_ranking = [];
+    docs_ratings = [];
+    for(let j = 0; j < terms_frequency_table.length; j++){
+        docs_ranking[j] = j;
+        docs_ratings[j] = sim(j, q_array, q_alpha);
+        console.log(`docs_ratings[${j}]: ${docs_ratings[j]}`);
+        for(let i = j; i > 0 && docs_ratings[i - 1] < docs_ratings[i]; i--){
+
+            //#region swap [i-1]  <-> [i]
+            const rank = docs_ranking[i];
+            const rate = docs_ratings[i];
+
+            docs_ranking[i] = docs_ranking[i-1];
+            docs_ratings[i] = docs_ratings[i-1];
+
+            docs_ranking[i-1] = rank;
+            docs_ratings[i-1] = rate;
+
+            //#endregion
+        }
+    }
+    return docs_ranking;
+}
+
+//#endregion
+
+
+
 //#region ///////////////////////////////// Exports /////////////////////////////////
 module.exports = {
     sim,
     termsFrequency: terms_frequency_table,
     termsWeight: terms_weight_table,
-    UpdateDocs: fill_terms_frequency_table
+    UpdateDocs: fill_terms_frequency_table,
+    SortDocumentsRankingBy
 }
 //#endregion
 
@@ -194,3 +225,6 @@ module.exports = {
 
 
 //#endregion
+
+
+

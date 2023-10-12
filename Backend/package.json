@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Servidor backend con configuracion JSON y Recuperacion de Informacion con diversos modelos",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "model": "nodemon vectorial.js",
+    "reader": "nodemon textreader.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankayra/Information-Retrieval-Project.git"
+  },
+  "keywords": [
+    "information",
+    "retrieval",
+    "server",
+    "text",
+    "vectorial",
+    "boolean"
+  ],
+  "author": "frankayra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frankayra/Information-Retrieval-Project/issues"
+  },
+  "homepage": "https://github.com/frankayra/Information-Retrieval-Project#readme"
+}

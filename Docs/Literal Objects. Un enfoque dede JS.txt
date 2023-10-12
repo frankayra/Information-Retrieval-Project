@@ -1,0 +1,1 @@
+Un objeto como éste se denomina literal object en este ejemplo está escrito literalmente el contenido del objeto tal y como lo hemos creado. Esto es diferente en comparación con los objetos instanciados a partir de constructores.

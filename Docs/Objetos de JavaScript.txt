@@ -1,0 +1,1 @@
+JavaScript, al ser un lenguaje libremente tipado, nunca hace castings. El linaje de un objeto es irrelevante. Lo que importa de un objeto es lo que puede hacer, no de qué desciende.
